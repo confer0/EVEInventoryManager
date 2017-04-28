@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Functions()
+comment1.params=urlStr
+comment1.target=java.lang.String\ readUrl(java.lang.String)
+comment2.params=itemName
+comment2.target=int\ itemID(java.lang.String)
+comment3.params=itemName
+comment3.target=eveinventorymanager.ValueData\ itemData(java.lang.String)
+comment4.params=ID
+comment4.target=eveinventorymanager.ValueData\ itemData(int)
+comment5.params=
+comment5.target=java.lang.String\ uIn()
+numComments=6

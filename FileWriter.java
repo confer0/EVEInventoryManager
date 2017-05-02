@@ -19,11 +19,11 @@ public class FileWriter {
 			for (int i = 0; i < list.items.size(); i++) {
 
 				item = list.items.get(i);
-				out.println(item.getID() + "");
-				out.println(item.getName() + "");
-				out.println(item.getPrice() + "");
-				out.println(item.getQnt() + "");
-				out.println(item.getVolume() + "");
+				out.println(item.getID());
+				out.println(item.getName());
+				out.println(item.getPrice());
+				out.println(item.getQnt());
+				out.println(item.getVolume());
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("nope");
@@ -52,11 +52,9 @@ public class FileWriter {
 				double price = Double.parseDouble(br.readLine());
 				int qnt = Integer.parseInt(br.readLine());
 				int volume = Integer.parseInt(br.readLine());
-				System.out.println(ID + name + price + qnt + volume);
 				Item item = new Item(name, qnt, volume, price, ID);
 				list.addNewItem(item);
-				// String newName, int newQnt, int newVol, double newPrice, int
-				// newID
+				
 			}
 
 		} catch (IOException e) {
@@ -66,13 +64,4 @@ public class FileWriter {
 		}
 	}
 
-	public static void main(String[] args) {
-		ItemList i = new ItemList();
-		Item item = new Item("thisname", 1, 2, 3, 4);
-		i.addNewItem(item);
-		i.addNewItem(item);
-		FileWriter a = new FileWriter();
-		a.write(i);
-		a.read();
-	}
-}
+	

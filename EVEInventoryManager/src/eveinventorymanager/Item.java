@@ -1,4 +1,4 @@
-package src.eveinventorymanager;
+package eveinventorymanager;
 
 
 //Abstract class all items.
@@ -25,6 +25,7 @@ public class Item
         ID = newID;
     }
     
+    @Override
     public String toString(){
         return "Item Name: " + name
         + "\nItem Type: " + ID
@@ -69,5 +70,14 @@ public class Item
     //returns volume per unit
     public int getVolume(){
         return volume;
+    }
+    
+    //>:(
+    //dealwithit
+    public double getTotalValue() {
+        return avgPrice*quantity;
+    }
+    public int getTotalVolume() {
+        return volume*quantity;
     }
 }

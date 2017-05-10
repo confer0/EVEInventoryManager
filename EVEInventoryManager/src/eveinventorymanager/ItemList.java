@@ -1,7 +1,7 @@
-package src.eveinventorymanager;
+package eveinventorymanager;
 
 import java.util.ArrayList;
-public class ItemList{
+public class ItemList {
 
     ArrayList<Item> items;
 
@@ -120,9 +120,14 @@ public class ItemList{
         return getItem(name).getVolume();
     }
 
-    //returns err somting
-    public String toString(){
-        return "yo";
+    //
+    public Object[][] toTable() {
+        Object[][] table = new Object[items.size()][4];
+        for(int i=0;i<items.size();i++) {
+            Item item = items.get(i);
+            table[i] = new Object[]{item.getName(),item.getQnt(),item.getTotalVolume(),item.getTotalValue()};
+        }
+        return table;
     }
 
 }

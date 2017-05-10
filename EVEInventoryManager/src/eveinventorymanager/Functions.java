@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.eveinventorymanager;
+package eveinventorymanager;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -48,12 +48,12 @@ public class Functions {
         }
     }
     
-    public ValueData itemData(String itemName) {
+    public Item itemData(String itemName) {
         return itemData(itemID(itemName));
     }
     
-    public ValueData itemData(int ID) {
-        return new ValueData(readUrl("http://api.eve-central.com/api/marketstat/json?typeid="+ID).split("[,\\:]"));
+    public Item itemData(int ID) {
+        return new Item(null,1,-1,Double.parseDouble(readUrl("http://api.eve-central.com/api/marketstat/json?typeid="+ID).split("[,\\:]")[53]),ID);
     }
     
     Scanner scanner;

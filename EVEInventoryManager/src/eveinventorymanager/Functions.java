@@ -19,11 +19,9 @@ import java.util.logging.Logger;
  * @author Connor
  */
 public class Functions {
-    public Functions() {
-        scanner = new Scanner(System.in);
-    }
+    private static Scanner scanner = new Scanner(System.in);
     
-    public String readUrl(String urlStr) {
+    public static String readUrl(String urlStr) {
         BufferedReader reader = null;
         try {
             URL url = new URL(urlStr);
@@ -40,7 +38,7 @@ public class Functions {
         }
     }
     
-    public int itemID(String itemName) {
+    public static int itemID(String itemName) {
         try {
             return Integer.parseInt((readUrl("https://www.fuzzwork.co.uk/api/typeid.php?typename="+URLEncoder.encode(itemName,"UTF-8")).split(","))[0].substring(11));
         } catch (UnsupportedEncodingException ex) {
@@ -48,16 +46,15 @@ public class Functions {
         }
     }
     
-    public Item itemData(String itemName) {
+    public static Item itemData(String itemName) {
         return itemData(itemID(itemName));
     }
     
-    public Item itemData(int ID) {
+    public static Item itemData(int ID) {
         return new Item(null,1,-1,Double.parseDouble(readUrl("http://api.eve-central.com/api/marketstat/json?typeid="+ID).split("[,\\:]")[53]),ID);
     }
     
-    Scanner scanner;
-    public String uIn() {
+    public static String uIn() {
         return scanner.nextLine();
     }
 }

@@ -25,7 +25,7 @@ public class ItemList {
     public Item getItem(String name){
         for(int i = 0; i < items.size(); i++){
             Item itemSelector = items.get(i);
-            if(itemSelector.getName().toLowerCase() == name.toLowerCase()){
+            if(itemSelector.getName().toLowerCase().equals(name.toLowerCase())){//Sean ya dingus, you used == here!
                 return itemSelector;
             }
         }
@@ -120,7 +120,7 @@ public class ItemList {
         return getItem(name).getVolume();
     }
 
-    //
+    //Converts to table for use in AccountFrame's table
     public Object[][] toTable() {
         Object[][] table = new Object[items.size()][4];
         for(int i=0;i<items.size();i++) {
@@ -129,5 +129,13 @@ public class ItemList {
         }
         return table;
     }
-
+    
+    //Outputs array of item names for Buy and Sell Frame ComboBoxes.
+    public String[] toNameArray() {
+        String[] array = new String[items.size()];
+        for(int i=0;i<items.size();i++) {
+            array[i] = items.get(i).getName();
+        }
+        return array;
+    }
 }

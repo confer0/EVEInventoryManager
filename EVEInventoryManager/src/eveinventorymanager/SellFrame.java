@@ -5,6 +5,9 @@
  */
 package eveinventorymanager;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -21,7 +24,19 @@ public class SellFrame extends javax.swing.JFrame {
     public SellFrame(AccountFrame parent) {
         initComponents();
         this.parent = parent;
+        this.setIconImage(parent.getIconImage());
+        setCloseOperation();
         itemComboBox.setModel(new DefaultComboBoxModel(parent.accountList.toNameArray()));
+    }
+    
+    //If you close with the X, it re-enables the parent.
+    public void setCloseOperation() {
+        WindowListener exitListener = new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                parent.setEnabled(true);
+            }
+        };
+        this.addWindowListener(exitListener);
     }
 
     /**
@@ -41,7 +56,7 @@ public class SellFrame extends javax.swing.JFrame {
         itemComboBox = new javax.swing.JComboBox<>();
         badAmountLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -119,7 +134,8 @@ public class SellFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        this.setVisible(false);
+        parent.setEnabled(true);
+        this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed

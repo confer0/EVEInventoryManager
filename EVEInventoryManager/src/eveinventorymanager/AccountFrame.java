@@ -5,6 +5,7 @@
  */
 package eveinventorymanager;
 
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,6 +22,7 @@ public class AccountFrame extends javax.swing.JFrame {
     public AccountFrame() {
         initComponents();
         accountList = new ItemList();
+        this.setIconImage(new ImageIcon("icon.png").getImage());
     }
     
     /**
@@ -103,10 +105,12 @@ public class AccountFrame extends javax.swing.JFrame {
     
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
         new BuyFrame(this).setVisible(true);
+        this.setEnabled(false);
     }//GEN-LAST:event_buyButtonActionPerformed
 
     private void sellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellButtonActionPerformed
         new SellFrame(this).setVisible(true);
+        this.setEnabled(false);
     }//GEN-LAST:event_sellButtonActionPerformed
 
     /**

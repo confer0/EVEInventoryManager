@@ -5,7 +5,12 @@
  */
 package eveinventorymanager;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,14 +20,41 @@ import javax.swing.table.DefaultTableModel;
 public class AccountFrame extends javax.swing.JFrame {
     
     ItemList accountList;
+    ArrayList alertList;
+    boolean listsModified;
     
     /**
      * Creates new form AccountFrame
      */
     public AccountFrame() {
         initComponents();
-        accountList = new ItemList();
+        accountList = new ItemList();//CHANGE: IMPORT FROM SAVE
+        alertList = new ArrayList();//CHANGE: IMPORT FROM SAVE
+        listsModified = false;
         this.setIconImage(new ImageIcon("icon.png").getImage());
+        setCloseOperation();
+    }
+    
+    //If you try to close without saving, it gives you the option.
+    public void setCloseOperation() {
+        WindowListener exitListener = new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                if(/*listsModified*/true) {
+                    //ASK TO CONFIRM EXIT WITHOUT SAVE
+                    //Yes=0,No=1,Cancel=2.
+                    int choice = JOptionPane.showConfirmDialog(null,"Changes have not been saved,\nwould you like to save?");
+                    switch(choice) {
+                        case 0: /*SAVE STUFF*/System.exit(0);break;
+                        case 1: System.exit(0);break;
+                        case 2: break;
+                        default: System.out.println("What the heck did you do?!?");
+                    }
+                } else {
+                    System.exit(0);
+                }
+            }
+        };
+        this.addWindowListener(exitListener);
     }
     
     /**
@@ -48,7 +80,7 @@ public class AccountFrame extends javax.swing.JFrame {
         buyButton = new javax.swing.JButton();
         sellButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         accountTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

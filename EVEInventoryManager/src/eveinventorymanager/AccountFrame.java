@@ -39,7 +39,7 @@ public class AccountFrame extends javax.swing.JFrame {
     public void setCloseOperation() {
         WindowListener exitListener = new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                if(/*listsModified*/true) {
+                if(listsModified) {
                     //ASK TO CONFIRM EXIT WITHOUT SAVE
                     //Yes=0,No=1,Cancel=2.
                     int choice = JOptionPane.showConfirmDialog(null,"Changes have not been saved,\nwould you like to save?");
@@ -79,6 +79,11 @@ public class AccountFrame extends javax.swing.JFrame {
         accountTable = new javax.swing.JTable();
         buyButton = new javax.swing.JButton();
         sellButton = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        saveFileMenuItem = new javax.swing.JMenuItem();
+        loadFileMenuItem = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -105,6 +110,33 @@ public class AccountFrame extends javax.swing.JFrame {
                 sellButtonActionPerformed(evt);
             }
         });
+
+        jMenu1.setText("File");
+
+        saveFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveFileMenuItem.setText("Save");
+        saveFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveFileMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(saveFileMenuItem);
+
+        loadFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        loadFileMenuItem.setText("Open");
+        loadFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadFileMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(loadFileMenuItem);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,6 +177,18 @@ public class AccountFrame extends javax.swing.JFrame {
         this.setEnabled(false);
     }//GEN-LAST:event_sellButtonActionPerformed
 
+    private void saveFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileMenuItemActionPerformed
+        Functions.save(accountList, alertList);
+        listsModified = false;
+    }//GEN-LAST:event_saveFileMenuItemActionPerformed
+
+    private void loadFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFileMenuItemActionPerformed
+        Object[] data = Functions.load();
+        accountList = (ItemList)data[0];
+        alertList = (ArrayList)data[1];
+        refreshTable();
+    }//GEN-LAST:event_loadFileMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -183,7 +227,12 @@ public class AccountFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable accountTable;
     private javax.swing.JButton buyButton;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem loadFileMenuItem;
+    private javax.swing.JMenuItem saveFileMenuItem;
     private javax.swing.JButton sellButton;
     // End of variables declaration//GEN-END:variables
 }

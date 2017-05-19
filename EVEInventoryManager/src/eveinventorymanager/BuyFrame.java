@@ -166,6 +166,7 @@ public class BuyFrame extends javax.swing.JFrame {
             } else {
                 item.add(quantity, price);
             }
+            parent.listsModified = true;
             parent.refreshTable();
         } else {
             System.out.println("Ya done messed up");

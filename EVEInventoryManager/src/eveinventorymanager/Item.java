@@ -3,8 +3,7 @@ package eveinventorymanager;
 
 //Abstract class all items.
 //Items need to be defined by what kind of item they are.
-public class Item
-{   
+public class Item implements java.io.Serializable {   
     //name of item
     private String name;
     //number of items

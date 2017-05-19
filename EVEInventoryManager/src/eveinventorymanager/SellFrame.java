@@ -147,6 +147,7 @@ public class SellFrame extends javax.swing.JFrame {
             parent.refreshTable();
         } else if(item.getQnt()==quantity) {
             parent.accountList.deleteItem(name);
+            parent.listsModified = true;
             parent.refreshTable();
         } else {
             System.out.println("Ya done messed up");

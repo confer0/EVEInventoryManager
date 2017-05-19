@@ -1,7 +1,7 @@
 package eveinventorymanager;
 
 import java.util.ArrayList;
-public class ItemList {
+public class ItemList implements java.io.Serializable {
 
     ArrayList<Item> items;
 

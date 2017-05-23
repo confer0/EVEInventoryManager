@@ -48,6 +48,9 @@ public class Item
     public int getQnt(){
         return quantity;
     }
+    public double getTotalPrice(){
+        return avgPrice*quantity;
+    }
     
     //returns current average price
     public double getPrice(){

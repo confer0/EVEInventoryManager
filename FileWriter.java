@@ -23,7 +23,6 @@ public class FileWriter {
 				out.println(item.getName());
 				out.println(item.getPrice());
 				out.println(item.getQnt());
-				out.println(item.getVolume());
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("nope");
@@ -51,8 +50,7 @@ public class FileWriter {
 				String name = br.readLine();
 				double price = Double.parseDouble(br.readLine());
 				int qnt = Integer.parseInt(br.readLine());
-				int volume = Integer.parseInt(br.readLine());
-				Item item = new Item(name, qnt, volume, price, ID);
+				Item item = new Item(name, qnt, price, ID);
 				list.addNewItem(item);
 				
 			}

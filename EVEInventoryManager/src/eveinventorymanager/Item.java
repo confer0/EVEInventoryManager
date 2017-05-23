@@ -8,8 +8,6 @@ public class Item implements java.io.Serializable {
     private String name;
     //number of items
     private int quantity;
-    //This is volume per unit in m3
-    private int volume;
     //current average price per unit
     private double avgPrice;
     //Item type ID
@@ -28,7 +26,6 @@ public class Item implements java.io.Serializable {
         return "Item Name: " + name
         + "\nItem Type: " + ID
         + "\nQuantity : " + quantity
-        + "\nVolume   : " + (quantity*volume) + " m3"
         + "\nPrice    : " + avgPrice;
         
     }

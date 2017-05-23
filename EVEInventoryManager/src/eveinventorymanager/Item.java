@@ -16,10 +16,9 @@ public class Item implements java.io.Serializable {
     //dependant on subclass
     private final int ID;
     //constructor for creating a new item
-    public Item(String newName, int newQnt, int newVol, double newPrice, int newID){
+    public Item(String newName, int newQnt, double newPrice, int newID){
         name = newName;
         quantity = newQnt;
-        volume = newVol;
         avgPrice = newPrice;
         ID = newID;
     }
@@ -66,17 +65,9 @@ public class Item implements java.io.Serializable {
         return name;
     }
     
-    //returns volume per unit
-    public int getVolume(){
-        return volume;
-    }
-    
     //>:(
     //dealwithit
     public double getTotalValue() {
         return avgPrice*quantity;
-    }
-    public int getTotalVolume() {
-        return volume*quantity;
     }
 }

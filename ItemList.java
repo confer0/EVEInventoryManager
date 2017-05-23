@@ -100,23 +100,7 @@ public class ItemList{
         return getItem(name).getPrice()*getItem(name).getQnt();
     }
 
-    //searches for and returns the total volume of an item with the matching ID
-    public double getTotalVolume(int ID){
-        return getItem(ID).getVolume()*getItem(ID).getQnt();
-    }
-
-    public double getTotalVolume(String name){
-        return getItem(name).getVolume()*getItem(name).getQnt();
-    }
-
-    //returns the volume per unit of an item with the matching ID
-    public double getVolume(int ID){
-        return getItem(ID).getVolume();
-    }
-
-    public double getVolume(String name){
-        return getItem(name).getVolume();
-    }
+    
     public void AlphaSort() {
 		int n = items.size();
 		for (int i = 0; i < n; i++) {

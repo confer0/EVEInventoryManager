@@ -28,8 +28,8 @@ public class AccountFrame extends javax.swing.JFrame {
      */
     public AccountFrame() {
         initComponents();
-        accountList = new ItemList();//CHANGE: IMPORT FROM SAVE
-        alertList = new ArrayList();//CHANGE: IMPORT FROM SAVE
+        accountList = new ItemList();
+        alertList = new ArrayList();
         listsModified = false;
         this.setIconImage(new ImageIcon("icon.png").getImage());
         setCloseOperation();
@@ -65,7 +65,7 @@ public class AccountFrame extends javax.swing.JFrame {
      */
     public void refreshTable() {
         DefaultTableModel model=(DefaultTableModel)accountTable.getModel();
-        model.setDataVector(accountList.toTable(searchTextField.getText()),new Object[]{"Name","Quantity","Value"});
+        model.setDataVector(accountList.toTable(searchTextField.getText()),new Object[]{"Name","Quantity","Unit Price","Total Value"});
     }
 
     /**
@@ -83,10 +83,15 @@ public class AccountFrame extends javax.swing.JFrame {
         sellButton = new javax.swing.JButton();
         searchTextField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        descriptionTextArea = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        marketTextArea = new javax.swing.JTextArea();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         saveFileMenuItem = new javax.swing.JMenuItem();
         loadFileMenuItem = new javax.swing.JMenuItem();
+        newFileMenuItem = new javax.swing.JMenuItem();
         viewMenu = new javax.swing.JMenu();
         namesAscendingViewMenuItem = new javax.swing.JMenuItem();
         namesDescendingViewMenuItem = new javax.swing.JMenuItem();
@@ -106,7 +111,7 @@ public class AccountFrame extends javax.swing.JFrame {
                 {}
             },
             new String [] {
-                "Name", "Quantity", "Value"
+                "Name", "Quantity", "Unit Price", "Total Value"
             }
         )
         {public boolean isCellEditable(int row, int column){return false;}}
@@ -139,6 +144,20 @@ public class AccountFrame extends javax.swing.JFrame {
         }
     });
 
+    descriptionTextArea.setEditable(false);
+    descriptionTextArea.setColumns(20);
+    descriptionTextArea.setLineWrap(true);
+    descriptionTextArea.setRows(5);
+    descriptionTextArea.setWrapStyleWord(true);
+    jScrollPane2.setViewportView(descriptionTextArea);
+
+    marketTextArea.setEditable(false);
+    marketTextArea.setColumns(20);
+    marketTextArea.setLineWrap(true);
+    marketTextArea.setRows(5);
+    marketTextArea.setWrapStyleWord(true);
+    jScrollPane3.setViewportView(marketTextArea);
+
     fileMenu.setText("File");
 
     saveFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
@@ -158,6 +177,15 @@ public class AccountFrame extends javax.swing.JFrame {
         }
     });
     fileMenu.add(loadFileMenuItem);
+
+    newFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+    newFileMenuItem.setText("New");
+    newFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            newFileMenuItemActionPerformed(evt);
+        }
+    });
+    fileMenu.add(newFileMenuItem);
 
     menuBar.add(fileMenu);
 
@@ -211,24 +239,33 @@ public class AccountFrame extends javax.swing.JFrame {
                 .addComponent(searchTextField)
                 .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGap(18, 18, 18)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .addComponent(jScrollPane2))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(searchButton)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buyButton)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(sellButton)))
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(20, 20, 20)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buyButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sellButton))))
+            .addContainerGap(67, Short.MAX_VALUE))
     );
 
     pack();
@@ -263,11 +300,35 @@ public class AccountFrame extends javax.swing.JFrame {
     
     //Detailed info for clicked item.
     private void accountTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accountTableMousePressed
-        if(evt.getClickCount()==2) {
-            int ID = Functions.itemID((String)accountTable.getValueAt(0,accountTable.getSelectedColumn()));
-            JOptionPane.showMessageDialog(this,Functions.itemDescription(ID));
-        }
+        int ID = Functions.itemID((String)accountTable.getValueAt(accountTable.getSelectedRow(),0));
+        descriptionTextArea.setText(Functions.itemDescription(ID));
+        descriptionTextArea.setCaretPosition(0);//Scroll to top.
+        marketTextArea.setText(Functions.marketInfo(accountList.getItem(ID)));
     }//GEN-LAST:event_accountTableMousePressed
+
+    private void newFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileMenuItemActionPerformed
+        boolean wipe=false;
+        if(listsModified) {
+            //ASK TO CONFIRM EXIT WITHOUT SAVE
+            //Yes=0,No=1,Cancel=2 or -1.
+            int choice = JOptionPane.showConfirmDialog(null,"Changes have not been saved,\nwould you like to save your changes?");
+            switch(choice) {
+                case 0: Functions.save(accountList, alertList);wipe=true;break;
+                case 1: wipe=true;break;
+                case 2: break;
+                case -1: break;
+                default: System.out.println("What the heck did you do?!?");
+            }
+        } else {
+            wipe=true;
+        }
+        if(wipe) {
+            accountList = new ItemList();
+            alertList = new ArrayList();
+            listsModified = false;
+        }
+        refreshTable();
+    }//GEN-LAST:event_newFileMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -308,14 +369,19 @@ public class AccountFrame extends javax.swing.JFrame {
     private javax.swing.JTable accountTable;
     private javax.swing.JMenu alertMenu;
     private javax.swing.JButton buyButton;
+    private javax.swing.JTextArea descriptionTextArea;
     private javax.swing.JMenuItem editAlertsAlertMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuItem loadFileMenuItem;
+    private javax.swing.JTextArea marketTextArea;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem namesAscendingViewMenuItem;
     private javax.swing.JMenuItem namesDescendingViewMenuItem;
     private javax.swing.JMenuItem newAlertAlertMenuItem;
+    private javax.swing.JMenuItem newFileMenuItem;
     private javax.swing.JMenuItem priceAscendingViewMenuItem;
     private javax.swing.JMenuItem priceDescendingViewMenuItem;
     private javax.swing.JMenuItem quantityAscendingViewMenuItem;

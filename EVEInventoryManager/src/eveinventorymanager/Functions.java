@@ -18,13 +18,13 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -133,5 +133,23 @@ public class Functions {
             }
         }
         return null;
+    }
+    
+    public static String marketInfo(Item item) {
+        double owned = item.getPrice();
+        double market = Math.round(itemData(item.getID()).getPrice()*100.0)/100.0;
+        double diff = Math.round(10000.0-(10000.0*owned/market))/100.0;
+        String r = "Per Owned:\t"+owned;
+        r+="\nPer Market:\t"+market;
+        r+="\nMarkup:\t"+diff+"%";
+        r+="\nAssessment:\t";
+        if(diff==0.0) {
+            r+="No Difference";
+        } else if(diff<0.0) {
+            r+="Unprofitable Sale";
+        } else {
+            r+="Profitable Sale";
+        }
+        return r;
     }
 }

@@ -1,7 +1,7 @@
 package eveinventorymanager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 public class ItemList implements java.io.Serializable {
 
     ArrayList<Item> items;
@@ -186,7 +186,7 @@ public class ItemList implements java.io.Serializable {
         for(int i=0;i<items.size();i++) {
             Item item = items.get(i);
             if(item.getName().toLowerCase().contains(param.toLowerCase())) {
-                table[i] = new Object[]{item.getName(),item.getQnt(),item.getTotalValue()};
+                table[i] = new Object[]{item.getName(),item.getQnt(),item.getPrice(),item.getTotalValue()};
             }
         }
         return table;

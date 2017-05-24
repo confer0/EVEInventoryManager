@@ -13,7 +13,6 @@ import java.util.Scanner;
  */
 public class _TMP_ConnorMarketTest {
     public static void main(String[] args) {
-        Functions func = new Functions();
         System.out.print("Desired Item: ");
         Scanner in = new Scanner(System.in);
         String itemName = in.next();

@@ -161,7 +161,7 @@ public class BuyFrame extends javax.swing.JFrame {
         if(ID!=0) {
             Item item = parent.accountList.getItem(ID);
             if(item==null) {
-                item = new Item(name,quantity,-1,price,ID);
+                item = new Item(name,quantity,price,ID);
                 parent.accountList.addNewItem(item);
             } else {
                 item.add(quantity, price);

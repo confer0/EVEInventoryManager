@@ -158,7 +158,7 @@ public class ItemList implements java.io.Serializable {
 		int n = items.size();
 		for (int i = 0; i < n; i++) {
 			for (int j = 1; j < (n - i); j++) {
-				if (items.get(j - 1).getTotalPrice()>items.get(j).getTotalPrice()) {
+				if (items.get(j - 1).getTotalValue()>items.get(j).getTotalValue()) {
 					items.set(j - 1, items.get(j));
 					items.remove(j + 1);
 				}
@@ -171,7 +171,7 @@ public class ItemList implements java.io.Serializable {
 		int n = items.size();
 		for (int i = 0; i < n; i++) {
 			for (int j = 1; j < (n - i); j++) {
-				if (items.get(j - 1).getTotalPrice()<items.get(j).getTotalPrice()) {
+				if (items.get(j - 1).getTotalValue()<items.get(j).getTotalValue()) {
 					items.set(j - 1, items.get(j));
 					items.remove(j + 1);
 				}
@@ -186,7 +186,7 @@ public class ItemList implements java.io.Serializable {
         for(int i=0;i<items.size();i++) {
             Item item = items.get(i);
             if(item.getName().toLowerCase().contains(param.toLowerCase())) {
-                table[i] = new Object[]{item.getName(),item.getQnt(),item.getTotalVolume(),item.getTotalValue()};
+                table[i] = new Object[]{item.getName(),item.getQnt(),item.getTotalValue()};
             }
         }
         return table;

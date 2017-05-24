@@ -74,7 +74,7 @@ public class Functions {
     }
     
     public static Item itemData(int ID) {
-        return new Item(null,1,-1,Double.parseDouble(readUrl("http://api.eve-central.com/api/marketstat/json?typeid="+ID).split("[,\\:]")[53]),ID);
+        return new Item(null,1,Double.parseDouble(readUrl("http://api.eve-central.com/api/marketstat/json?typeid="+ID).split("[,\\:]")[53]),ID);
     }
     
     public static String itemDescription(int ID) {

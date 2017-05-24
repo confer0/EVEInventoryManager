@@ -65,7 +65,7 @@ public class AccountFrame extends javax.swing.JFrame {
      */
     public void refreshTable() {
         DefaultTableModel model=(DefaultTableModel)accountTable.getModel();
-        model.setDataVector(accountList.toTable(searchTextField.getText()),new Object[]{"Name","Quantity","Volume","Value"});
+        model.setDataVector(accountList.toTable(searchTextField.getText()),new Object[]{"Name","Quantity","Value"});
     }
 
     /**
@@ -106,7 +106,7 @@ public class AccountFrame extends javax.swing.JFrame {
                 {}
             },
             new String [] {
-                "Name", "Quantity", "Volume", "Value"
+                "Name", "Quantity", "Value"
             }
         )
         {public boolean isCellEditable(int row, int column){return false;}}

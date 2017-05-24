@@ -33,6 +33,7 @@ public class AccountFrame extends javax.swing.JFrame {
         listsModified = false;
         this.setIconImage(new ImageIcon("icon.png").getImage());
         setCloseOperation();
+        toggleAlertCheckBoxMenuItem.setEnabled(true);
     }
     
     //If you try to close without saving, it gives you the option.
@@ -41,12 +42,13 @@ public class AccountFrame extends javax.swing.JFrame {
             public void windowClosing(WindowEvent e) {
                 if(listsModified) {
                     //ASK TO CONFIRM EXIT WITHOUT SAVE
-                    //Yes=0,No=1,Cancel=2.
-                    int choice = JOptionPane.showConfirmDialog(null,"Changes have not been saved,\nwould you like to save?");
+                    //Yes=0,No=1,Cancel=2 or -1.
+                    int choice = JOptionPane.showConfirmDialog(null,"Changes have not been saved,\nwould you like to save your changes?");
                     switch(choice) {
-                        case 0: /*SAVE STUFF*/System.exit(0);break;
+                        case 0: Functions.save(accountList, alertList);System.exit(0);break;
                         case 1: System.exit(0);break;
                         case 2: break;
+                        case -1: break;
                         default: System.out.println("What the heck did you do?!?");
                     }
                 } else {
@@ -63,7 +65,7 @@ public class AccountFrame extends javax.swing.JFrame {
      */
     public void refreshTable() {
         DefaultTableModel model=(DefaultTableModel)accountTable.getModel();
-        model.setDataVector(accountList.toTable(),new Object[]{"Name","Quantity","Volume","Value"});
+        model.setDataVector(accountList.toTable(searchTextField.getText()),new Object[]{"Name","Quantity","Volume","Value"});
     }
 
     /**
@@ -79,11 +81,23 @@ public class AccountFrame extends javax.swing.JFrame {
         accountTable = new javax.swing.JTable();
         buyButton = new javax.swing.JButton();
         sellButton = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        searchTextField = new javax.swing.JTextField();
+        searchButton = new javax.swing.JButton();
+        menuBar = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
         saveFileMenuItem = new javax.swing.JMenuItem();
         loadFileMenuItem = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        viewMenu = new javax.swing.JMenu();
+        namesAscendingViewMenuItem = new javax.swing.JMenuItem();
+        namesDescendingViewMenuItem = new javax.swing.JMenuItem();
+        priceAscendingViewMenuItem = new javax.swing.JMenuItem();
+        priceDescendingViewMenuItem = new javax.swing.JMenuItem();
+        quantityAscendingViewMenuItem = new javax.swing.JMenuItem();
+        quantityDescendingViewMenuItem = new javax.swing.JMenuItem();
+        alertMenu = new javax.swing.JMenu();
+        newAlertAlertMenuItem = new javax.swing.JMenuItem();
+        editAlertsAlertMenuItem = new javax.swing.JMenuItem();
+        toggleAlertCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -94,77 +108,130 @@ public class AccountFrame extends javax.swing.JFrame {
             new String [] {
                 "Name", "Quantity", "Volume", "Value"
             }
-        ));
-        jScrollPane1.setViewportView(accountTable);
+        )
+        {public boolean isCellEditable(int row, int column){return false;}}
+    );
+    accountTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mousePressed(java.awt.event.MouseEvent evt) {
+            accountTableMousePressed(evt);
+        }
+    });
+    jScrollPane1.setViewportView(accountTable);
 
-        buyButton.setText("Log Purchase");
-        buyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buyButtonActionPerformed(evt);
-            }
-        });
+    buyButton.setText("Log Purchase");
+    buyButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            buyButtonActionPerformed(evt);
+        }
+    });
 
-        sellButton.setText("Log Sale");
-        sellButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sellButtonActionPerformed(evt);
-            }
-        });
+    sellButton.setText("Log Sale");
+    sellButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            sellButtonActionPerformed(evt);
+        }
+    });
 
-        jMenu1.setText("File");
+    searchButton.setText("Search");
+    searchButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            searchButtonActionPerformed(evt);
+        }
+    });
 
-        saveFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveFileMenuItem.setText("Save");
-        saveFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveFileMenuItemActionPerformed(evt);
-            }
-        });
-        jMenu1.add(saveFileMenuItem);
+    fileMenu.setText("File");
 
-        loadFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        loadFileMenuItem.setText("Open");
-        loadFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadFileMenuItemActionPerformed(evt);
-            }
-        });
-        jMenu1.add(loadFileMenuItem);
+    saveFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+    saveFileMenuItem.setText("Save");
+    saveFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            saveFileMenuItemActionPerformed(evt);
+        }
+    });
+    fileMenu.add(saveFileMenuItem);
 
-        jMenuBar1.add(jMenu1);
+    loadFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+    loadFileMenuItem.setText("Open");
+    loadFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            loadFileMenuItemActionPerformed(evt);
+        }
+    });
+    fileMenu.add(loadFileMenuItem);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+    menuBar.add(fileMenu);
 
-        setJMenuBar(jMenuBar1);
+    viewMenu.setText("View");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sellButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(buyButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(sellButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+    namesAscendingViewMenuItem.setText("Names A-Z");
+    viewMenu.add(namesAscendingViewMenuItem);
 
-        pack();
+    namesDescendingViewMenuItem.setText("Names Z-A");
+    viewMenu.add(namesDescendingViewMenuItem);
+
+    priceAscendingViewMenuItem.setText("Price 1-10");
+    viewMenu.add(priceAscendingViewMenuItem);
+
+    priceDescendingViewMenuItem.setText("Price 10-1");
+    viewMenu.add(priceDescendingViewMenuItem);
+
+    quantityAscendingViewMenuItem.setText("Quantity 1-10");
+    viewMenu.add(quantityAscendingViewMenuItem);
+
+    quantityDescendingViewMenuItem.setText("Quantity 10-1");
+    viewMenu.add(quantityDescendingViewMenuItem);
+
+    menuBar.add(viewMenu);
+
+    alertMenu.setText("Alerts");
+
+    newAlertAlertMenuItem.setText("New Alert");
+    alertMenu.add(newAlertAlertMenuItem);
+
+    editAlertsAlertMenuItem.setText("Edit Alerts");
+    alertMenu.add(editAlertsAlertMenuItem);
+
+    toggleAlertCheckBoxMenuItem.setSelected(true);
+    toggleAlertCheckBoxMenuItem.setText("Enabled");
+    alertMenu.add(toggleAlertCheckBoxMenuItem);
+
+    menuBar.add(alertMenu);
+
+    setJMenuBar(menuBar);
+
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(sellButton, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addComponent(buyButton, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addComponent(searchTextField)
+                .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(18, 18, 18)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(searchButton)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buyButton)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(sellButton)))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+
+    pack();
     }// </editor-fold>//GEN-END:initComponents
     
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
@@ -178,7 +245,7 @@ public class AccountFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_sellButtonActionPerformed
 
     private void saveFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileMenuItemActionPerformed
-        Functions.save(accountList, alertList);
+        Functions.save(accountList,alertList);
         listsModified = false;
     }//GEN-LAST:event_saveFileMenuItemActionPerformed
 
@@ -186,8 +253,21 @@ public class AccountFrame extends javax.swing.JFrame {
         Object[] data = Functions.load();
         accountList = (ItemList)data[0];
         alertList = (ArrayList)data[1];
+        listsModified = false;
         refreshTable();
     }//GEN-LAST:event_loadFileMenuItemActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        refreshTable();
+    }//GEN-LAST:event_searchButtonActionPerformed
+    
+    //Detailed info for clicked item.
+    private void accountTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accountTableMousePressed
+        if(evt.getClickCount()==2) {
+            int ID = Functions.itemID((String)accountTable.getValueAt(0,accountTable.getSelectedColumn()));
+            JOptionPane.showMessageDialog(this,Functions.itemDescription(ID));
+        }
+    }//GEN-LAST:event_accountTableMousePressed
 
     /**
      * @param args the command line arguments
@@ -226,13 +306,25 @@ public class AccountFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable accountTable;
+    private javax.swing.JMenu alertMenu;
     private javax.swing.JButton buyButton;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem editAlertsAlertMenuItem;
+    private javax.swing.JMenu fileMenu;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem loadFileMenuItem;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem namesAscendingViewMenuItem;
+    private javax.swing.JMenuItem namesDescendingViewMenuItem;
+    private javax.swing.JMenuItem newAlertAlertMenuItem;
+    private javax.swing.JMenuItem priceAscendingViewMenuItem;
+    private javax.swing.JMenuItem priceDescendingViewMenuItem;
+    private javax.swing.JMenuItem quantityAscendingViewMenuItem;
+    private javax.swing.JMenuItem quantityDescendingViewMenuItem;
     private javax.swing.JMenuItem saveFileMenuItem;
+    private javax.swing.JButton searchButton;
+    private javax.swing.JTextField searchTextField;
     private javax.swing.JButton sellButton;
+    private javax.swing.JCheckBoxMenuItem toggleAlertCheckBoxMenuItem;
+    private javax.swing.JMenu viewMenu;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,6 +1,7 @@
 package eveinventorymanager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 public class ItemList implements java.io.Serializable {
 
     ArrayList<Item> items;
@@ -121,11 +122,13 @@ public class ItemList implements java.io.Serializable {
     }
 
     //Converts to table for use in AccountFrame's table
-    public Object[][] toTable() {
+    public Object[][] toTable(String param) {
         Object[][] table = new Object[items.size()][4];
         for(int i=0;i<items.size();i++) {
             Item item = items.get(i);
-            table[i] = new Object[]{item.getName(),item.getQnt(),item.getTotalVolume(),item.getTotalValue()};
+            if(item.getName().toLowerCase().contains(param.toLowerCase())) {
+                table[i] = new Object[]{item.getName(),item.getQnt(),item.getTotalVolume(),item.getTotalValue()};
+            }
         }
         return table;
     }

@@ -14,24 +14,41 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author Connor
  */
 public class Functions {
-    private static Scanner scanner = new Scanner(System.in);
+    //This is the bit that tells it to trust anyhting
+    static TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+        public java.security.cert.X509Certificate[] getAcceptedIssuers() {return null;}
+        public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+        public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+    }};
     
     public static String readUrl(String urlStr) {
         BufferedReader reader = null;
         try {
+            //This is the bit that implements the thing that makes it trust anything.
+            final SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            
             URL url = new URL(urlStr);
-            reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            URLConnection con = url.openConnection();
+            reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuffer buffer = new StringBuffer();
             int read;
             char[] chars = new char[1024];
@@ -39,7 +56,7 @@ public class Functions {
             reader.close();
             return buffer.toString();
         } catch (Exception ex) {
-            Logger.getLogger(Functions.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error:\nCould not connect to server.\nPlease check your internet connection.","Connection Error", 0);
             return null;
         }
     }
@@ -60,31 +77,61 @@ public class Functions {
         return new Item(null,1,-1,Double.parseDouble(readUrl("http://api.eve-central.com/api/marketstat/json?typeid="+ID).split("[,\\:]")[53]),ID);
     }
     
+    public static String itemDescription(int ID) {
+        String[] s = Functions.readUrl("https://esi.tech.ccp.is/latest/universe/types/"+ID).split("\"");
+        for(int i=0;i<s.length;i++) {
+            if(s[i].equals("description")) {
+                String st = s[i+2];
+                st = st.replaceAll("\\\\n", "\n");
+                st = st.replaceAll("\\\\r", "\r");
+                st = st.replaceAll("(<[^>]*>)", "");//Witchcract that detects and removes "<stuff>"
+                return st;
+            }
+        }
+        return "Error finding description.";
+    }
+    
     public static void save(ItemList accountList,ArrayList alertList) {
-        try {
-            File file = new File("save.txt");
-            file.createNewFile();
-            FileOutputStream fileOut = new FileOutputStream(file);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(accountList);
-            out.writeObject(alertList);
-            out.close();
-        } catch (Exception e) {
-            System.out.println(e);
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        chooser.setSelectedFile(new File("inventory.eim"));
+        chooser.setFileFilter(new FileNameExtensionFilter("Eve Inventory Manager File (*.eim)","eim"));
+        if(chooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION) {
+            try {
+                String fileName = chooser.getSelectedFile().toString();
+                if (!fileName .endsWith(".eim")) {fileName += ".eim";}
+                File file = new File(fileName);
+                file.createNewFile();
+                FileOutputStream fileOut = new FileOutputStream(file);
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(accountList);
+                out.writeObject(alertList);
+                out.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
     
     public static Object[] load() {
-        try {
-            Object[] data = new Object[2];
-            FileInputStream fileIn = new FileInputStream("save.txt");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            data[0] = in.readObject();
-            data[1] = in.readObject();
-            in.close();
-            return data;
-        } catch(Exception e) {
-            return null;
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        chooser.setSelectedFile(new File("inventory.eim"));
+        chooser.setFileFilter(new FileNameExtensionFilter("Eve Inventory Manager File (*.eim)","eim"));
+        if(chooser.showOpenDialog(null)==JFileChooser.APPROVE_OPTION) {
+            try {
+                Object[] data = new Object[2];
+                String fileName = chooser.getSelectedFile().toString();
+                FileInputStream fileIn = new FileInputStream(fileName);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                data[0] = in.readObject();
+                data[1] = in.readObject();
+                in.close();
+                return data;
+            } catch(Exception e) {
+                return null;
+            }
         }
+        return null;
     }
 }

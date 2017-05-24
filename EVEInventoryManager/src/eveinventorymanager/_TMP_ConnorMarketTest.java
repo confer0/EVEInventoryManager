@@ -5,6 +5,8 @@
  */
 package eveinventorymanager;
 
+import java.util.Scanner;
+
 /**
  *
  * @author Connor
@@ -13,7 +15,8 @@ public class _TMP_ConnorMarketTest {
     public static void main(String[] args) {
         Functions func = new Functions();
         System.out.print("Desired Item: ");
-        String itemName = func.uIn();
+        Scanner in = new Scanner(System.in);
+        String itemName = in.next();
         System.out.println(func.itemID(itemName));
         System.out.println(func.itemData(func.itemID(itemName)));
     }

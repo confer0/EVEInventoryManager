@@ -2,9 +2,9 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+    <Menu class="javax.swing.JMenuBar" name="menuBar">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="fileMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
@@ -33,10 +33,65 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu2">
+        <Menu class="javax.swing.JMenu" name="viewMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Edit"/>
+            <Property name="text" type="java.lang.String" value="View"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="namesAscendingViewMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Names A-Z"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="namesDescendingViewMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Names Z-A"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="priceAscendingViewMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Price 1-10"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="priceDescendingViewMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Price 10-1"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="quantityAscendingViewMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Quantity 1-10"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="quantityDescendingViewMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Quantity 10-1"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="alertMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Alerts"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="newAlertAlertMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="New Alert"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="editAlertsAlertMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Edit Alerts"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="toggleAlertCheckBoxMenuItem">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Enabled"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>
@@ -45,7 +100,7 @@
     <Property name="defaultCloseOperation" type="int" value="0"/>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="menuBar"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
@@ -66,9 +121,11 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="sellButton" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                  <Component id="buyButton" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="sellButton" alignment="0" pref="150" max="32767" attributes="0"/>
+                  <Component id="buyButton" alignment="0" pref="150" max="32767" attributes="0"/>
+                  <Component id="searchTextField" alignment="0" max="32767" attributes="0"/>
+                  <Component id="searchButton" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="300" max="-2" attributes="0"/>
@@ -80,11 +137,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jScrollPane1" min="-2" pref="250" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
+                      <Component id="searchTextField" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="searchButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="buyButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="sellButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -104,7 +165,7 @@
         <Component class="javax.swing.JTable" name="accountTable">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Name&quot;, &quot;Quantity&quot;, &quot;Volume&quot;, &quot;Value&quot;&#xa;    }&#xa;)" type="code"/>
+              <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Name&quot;, &quot;Quantity&quot;, &quot;Volume&quot;, &quot;Value&quot;&#xa;    }&#xa;)&#xa;{public boolean isCellEditable(int row, int column){return false;}}&#xa;" type="code"/>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0"/>
@@ -113,6 +174,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="accountTableMousePressed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -130,6 +194,16 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sellButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="searchTextField">
+    </Component>
+    <Component class="javax.swing.JButton" name="searchButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Search"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

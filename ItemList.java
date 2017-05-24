@@ -100,27 +100,88 @@ public class ItemList{
         return getItem(name).getPrice()*getItem(name).getQnt();
     }
 
-    //searches for and returns the total volume of an item with the matching ID
-    public double getTotalVolume(int ID){
-        return getItem(ID).getVolume()*getItem(ID).getQnt();
-    }
+    
+    public void AlphaSort() {
+		int n = items.size();
+		for (int i = 0; i < n; i++) {
+			for (int j = 1; j < (n - i); j++) {
+				if ((items.get(j - 1).getName()).compareToIgnoreCase(items.get(j).getName()) > 0) {
+					items.set(j - 1, items.get(j));
+					items.remove(j + 1);
+				}
 
-    public double getTotalVolume(String name){
-        return getItem(name).getVolume()*getItem(name).getQnt();
-    }
+			}
+		}
+	}
+	public void ReverseAlphaSort() {
+		int n = items.size();
+		for (int i = 0; i < n; i++) {
+			for (int j = 1; j < (n - i); j++) {
+				if ((items.get(j - 1).getName()).compareToIgnoreCase(items.get(j).getName()) < 0) {
+					items.set(j - 1, items.get(j));
+					items.remove(j + 1);
+				}
 
-    //returns the volume per unit of an item with the matching ID
-    public double getVolume(int ID){
-        return getItem(ID).getVolume();
-    }
+			}
+		}
+	}
+	public void AmtSortGtoS() {
+		//greatest to smallest
+		int n = items.size();
+		for (int i = 0; i < n; i++) {
+			for (int j = 1; j < (n - i); j++) {
+				if (items.get(j - 1).getQnt()<items.get(j).getQnt()) {
+					items.set(j - 1, items.get(j));
+					items.remove(j + 1);
+				}
 
-    public double getVolume(String name){
-        return getItem(name).getVolume();
-    }
+			}
+		}
+	}
+	public void AmtSortStoG() {
+		//greatest to smallest
+		int n = items.size();
+		for (int i = 0; i < n; i++) {
+			for (int j = 1; j < (n - i); j++) {
+				if (items.get(j - 1).getQnt()>items.get(j).getQnt()) {
+					items.set(j - 1, items.get(j));
+					items.remove(j + 1);
+				}
+
+			}
+		}
+	}
+	public void ValSortStoG() {
+		//greatest to smallest
+		int n = items.size();
+		for (int i = 0; i < n; i++) {
+			for (int j = 1; j < (n - i); j++) {
+				if (items.get(j - 1).getTotalPrice()>items.get(j).getTotalPrice()) {
+					items.set(j - 1, items.get(j));
+					items.remove(j + 1);
+				}
+
+			}
+		}
+	}
+	public void ValSortGtoS() {
+		//greatest to smallest
+		int n = items.size();
+		for (int i = 0; i < n; i++) {
+			for (int j = 1; j < (n - i); j++) {
+				if (items.get(j - 1).getTotalPrice()<items.get(j).getTotalPrice()) {
+					items.set(j - 1, items.get(j));
+					items.remove(j + 1);
+				}
+
+			}
+		}
+	}
 
     //returns err somting
     public String toString(){
         return "yo";
     }
+    
 
 }

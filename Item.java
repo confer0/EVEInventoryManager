@@ -7,18 +7,15 @@ public class Item
     private String name;
     //number of items
     private int quantity;
-    //This is volume per unit in m3
-    private int volume;
     //current average price per unit
     private double avgPrice;
     //Item type ID
     //dependant on subclass
     private final int ID;
     //constructor for creating a new item
-    public Item(String newName, int newQnt, int newVol, double newPrice, int newID){
+    public Item(String newName, int newQnt, double newPrice, int newID){
         name = newName;
         quantity = newQnt;
-        volume = newVol;
         avgPrice = newPrice;
         ID = newID;
     }
@@ -27,7 +24,6 @@ public class Item
         return "Item Name: " + name
         + "\nItem Type: " + ID
         + "\nQuantity : " + quantity
-        + "\nVolume   : " + (quantity*volume) + " m3"
         + "\nPrice    : " + avgPrice;
         
     }
@@ -48,6 +44,9 @@ public class Item
     public int getQnt(){
         return quantity;
     }
+    public double getTotalPrice(){
+        return avgPrice*quantity;
+    }
     
     //returns current average price
     public double getPrice(){
@@ -62,10 +61,5 @@ public class Item
     //returns name
     public String getName(){
         return name;
-    }
-    
-    //returns volume per unit
-    public int getVolume(){
-        return volume;
     }
 }

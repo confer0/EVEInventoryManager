@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -161,7 +162,7 @@ public class BuyFrame extends javax.swing.JFrame {
         if(ID!=0) {
             Item item = parent.accountList.getItem(ID);
             if(item==null) {
-                item = new Item(name,quantity,price,ID);
+                item = new Item(Functions.itemName(ID),quantity,price,ID);
                 parent.accountList.addNewItem(item);
             } else {
                 item.add(quantity, price);
@@ -169,7 +170,7 @@ public class BuyFrame extends javax.swing.JFrame {
             parent.listsModified = true;
             parent.refreshTable();
         } else {
-            System.out.println("Ya done messed up");
+            JOptionPane.showMessageDialog(this,"Error:\nYou have entered invalid arguments.\nPlease ensure the name you used is correct.\nIf you are unsure, check the name in-game.");
         }
         cancelButtonActionPerformed(evt);
     }//GEN-LAST:event_okButtonActionPerformed
@@ -189,40 +190,6 @@ public class BuyFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemComboBoxActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BuyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BuyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BuyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BuyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BuyFrame(null).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel badNameLabel;

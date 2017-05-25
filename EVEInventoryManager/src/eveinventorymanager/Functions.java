@@ -69,6 +69,10 @@ public class Functions {
         }
     }
     
+    public static String itemName(int ID) {
+        return (readUrl("https://www.fuzzwork.co.uk/api/typeid.php?typeid="+ID).split("\""))[5];
+    }
+    
     public static Item itemData(String itemName) {
         return itemData(itemID(itemName));
     }
@@ -91,10 +95,31 @@ public class Functions {
         return "Error finding description.";
     }
     
-    public static void save(ItemList accountList,ArrayList alertList) {
+    public static void save(AccountFrame frame) {
+        if(frame.mostRecentFile!=null) {
+            try {
+                String fileName = frame.mostRecentFile;
+                File file = new File(fileName);
+                file.createNewFile();
+                FileOutputStream fileOut = new FileOutputStream(file);
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(frame.accountList);
+                out.writeObject(frame.alertList);
+                out.writeObject(frame.alertInterval);
+                frame.listsModified=false;
+                frame.mostRecentFile = fileName;
+                out.close();
+            } catch (Exception e) {}
+        } else {
+            saveAs(frame);
+        }
+    }
+    
+    public static void saveAs(AccountFrame frame) {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        chooser.setSelectedFile(new File("inventory.eim"));
+        if(frame.mostRecentFile!=null) {chooser.setSelectedFile(new File(frame.mostRecentFile));}
+        else {chooser.setSelectedFile(new File("inventory.eim"));}
         chooser.setFileFilter(new FileNameExtensionFilter("Eve Inventory Manager File (*.eim)","eim"));
         if(chooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION) {
             try {
@@ -104,16 +129,17 @@ public class Functions {
                 file.createNewFile();
                 FileOutputStream fileOut = new FileOutputStream(file);
                 ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                out.writeObject(accountList);
-                out.writeObject(alertList);
+                out.writeObject(frame.accountList);
+                out.writeObject(frame.alertList);
+                out.writeObject(frame.alertInterval);
+                frame.listsModified=false;
+                frame.mostRecentFile = fileName;
                 out.close();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+            } catch (Exception e) {}
         }
     }
     
-    public static Object[] load() {
+    public static void load(AccountFrame frame) {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogType(JFileChooser.OPEN_DIALOG);
         chooser.setSelectedFile(new File("inventory.eim"));
@@ -124,15 +150,14 @@ public class Functions {
                 String fileName = chooser.getSelectedFile().toString();
                 FileInputStream fileIn = new FileInputStream(fileName);
                 ObjectInputStream in = new ObjectInputStream(fileIn);
-                data[0] = in.readObject();
-                data[1] = in.readObject();
+                frame.accountList = (ItemList)in.readObject();
+                frame.alertList = (ArrayList)in.readObject();
+                frame.alertInterval = (long)in.readObject();
+                frame.listsModified = false;
+                frame.mostRecentFile = fileName;
                 in.close();
-                return data;
-            } catch(Exception e) {
-                return null;
-            }
+            } catch(Exception e) {}
         }
-        return null;
     }
     
     public static String marketInfo(Item item) {

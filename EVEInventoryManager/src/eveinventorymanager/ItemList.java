@@ -104,84 +104,86 @@ public class ItemList implements java.io.Serializable {
     }
 
      public void AlphaSort() {
-		int n = items.size();
-		for (int i = 0; i < n; i++) {
-			for (int j = 1; j < (n - i); j++) {
-				if ((items.get(j - 1).getName()).compareToIgnoreCase(items.get(j).getName()) > 0) {
-					items.set(j - 1, items.get(j));
-					items.remove(j + 1);
-				}
-
-			}
-		}
+            boolean flag = true;
+            while(flag) {
+                flag = false;
+                for(int n=0;n<items.size()-1;n++) {
+                    if ((items.get(n).getName()).compareToIgnoreCase(items.get(n+1).getName()) > 0) {
+                        items.add(n, items.remove(n+1));flag=true;
+                    }
+                }
+            }
 	}
 	public void ReverseAlphaSort() {
-		int n = items.size();
-		for (int i = 0; i < n; i++) {
-			for (int j = 1; j < (n - i); j++) {
-				if ((items.get(j - 1).getName()).compareToIgnoreCase(items.get(j).getName()) < 0) {
-					items.set(j - 1, items.get(j));
-					items.remove(j + 1);
-				}
-
-			}
-		}
-	}
+            boolean flag = true;
+            while(flag) {
+                flag = false;
+                for(int n=0;n<items.size()-1;n++) {
+                    if ((items.get(n).getName()).compareToIgnoreCase(items.get(n+1).getName()) < 0) {
+                        items.add(n, items.remove(n+1));flag=true;
+                    }
+                }
+            }
+        }
 	public void AmtSortGtoS() {
-		//greatest to smallest
-		int n = items.size();
-		for (int i = 0; i < n; i++) {
-			for (int j = 1; j < (n - i); j++) {
-				if (items.get(j - 1).getQnt()<items.get(j).getQnt()) {
-					items.set(j - 1, items.get(j));
-					items.remove(j + 1);
-				}
-
-			}
-		}
+            //greatest to smallest
+            boolean flag = true;
+            while(flag) {
+                flag = false;
+                for(int n=0;n<items.size()-1;n++) {
+                    if (items.get(n).getQnt()<items.get(n+1).getQnt()) {
+                        items.add(n, items.remove(n+1));flag=true;
+                    }
+                }
+            }
 	}
 	public void AmtSortStoG() {
-		//greatest to smallest
-		int n = items.size();
-		for (int i = 0; i < n; i++) {
-			for (int j = 1; j < (n - i); j++) {
-				if (items.get(j - 1).getQnt()>items.get(j).getQnt()) {
-					items.set(j - 1, items.get(j));
-					items.remove(j + 1);
-				}
-
-			}
-		}
+            //greatest to smallest
+            boolean flag = true;
+            while(flag) {
+                flag = false;
+                for(int n=0;n<items.size()-1;n++) {
+                    if (items.get(n).getQnt()>items.get(n+1).getQnt()) {
+                        items.add(n, items.remove(n+1));flag=true;
+                    }
+                }
+            }
 	}
 	public void ValSortStoG() {
-		//greatest to smallest
-		int n = items.size();
-		for (int i = 0; i < n; i++) {
-			for (int j = 1; j < (n - i); j++) {
-				if (items.get(j - 1).getTotalValue()>items.get(j).getTotalValue()) {
-					items.set(j - 1, items.get(j));
-					items.remove(j + 1);
-				}
-
-			}
-		}
+            //greatest to smallest
+            boolean flag = true;
+            while(flag) {
+                flag = false;
+                for(int n=0;n<items.size()-1;n++) {
+                    if (items.get(n).getTotalValue()>items.get(n+1).getTotalValue()) {
+                        items.add(n, items.remove(n+1));flag=true;
+                    }
+                }
+            }
 	}
 	public void ValSortGtoS() {
-		//greatest to smallest
-		int n = items.size();
-		for (int i = 0; i < n; i++) {
-			for (int j = 1; j < (n - i); j++) {
-				if (items.get(j - 1).getTotalValue()<items.get(j).getTotalValue()) {
-					items.set(j - 1, items.get(j));
-					items.remove(j + 1);
-				}
-
-			}
-		}
+            //greatest to smallest
+            boolean flag = true;
+            while(flag) {
+                flag = false;
+                for(int n=0;n<items.size()-1;n++) {
+                    if (items.get(n).getTotalValue()<items.get(n+1).getTotalValue()) {
+                        items.add(n, items.remove(n+1));flag=true;
+                    }
+                }
+            }
 	}
 
     //Converts to table for use in AccountFrame's table
-    public Object[][] toTable(String param) {
+    public Object[][] toTable(String param,int sortOption) {
+        switch(sortOption) {
+            case 0:AlphaSort();break;
+            case 1:ReverseAlphaSort();break;
+            case 2:ValSortStoG();break;
+            case 3:ValSortGtoS();break;
+            case 4:AmtSortStoG();break;
+            case 5:AmtSortGtoS();break;
+        }
         Object[][] table = new Object[items.size()][4];
         for(int i=0;i<items.size();i++) {
             Item item = items.get(i);

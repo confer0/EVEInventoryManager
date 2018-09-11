@@ -15,6 +15,7 @@ public class EVEInventoryManager {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+	System.out.println("Sean was here");
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AccountFrame().setVisible(true);
